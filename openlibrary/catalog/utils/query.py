@@ -14,7 +14,7 @@ def urlopen(url, data=None):
     user_agent = f'Mozilla/5.0 (openlibrary; {__name__}) Python/{version}'
     headers = {'User-Agent': user_agent}
 
-    return requests.get(url, data=data, headers=headers)
+    return requests.get(url, data=data, headers=headers, timeout=60)
 
 
 def jsonload(url):

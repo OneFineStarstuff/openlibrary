@@ -236,7 +236,7 @@ def fetch_google_book(isbn: str) -> dict | None:
     url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}"
     headers = {"User-Agent": "Open Library BookWorm/1.0"}
     try:
-        r = requests.get(url, headers=headers)
+        r = requests.get(url, headers=headers, timeout=60)
         if r.status_code == 200:
             return r.json()
 

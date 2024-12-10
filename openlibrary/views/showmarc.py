@@ -24,7 +24,7 @@ class show_ia(app.view):
         error_404 = False
         url = f'https://archive.org/download/{ia}/{ia}_meta.mrc'
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=60)
             response.raise_for_status()
             data = response.content
         except requests.HTTPError as e:
@@ -36,7 +36,7 @@ class show_ia(app.view):
         if error_404:  # no MARC record
             url = f'https://archive.org/download/{ia}/{ia}_meta.xml'
             try:
-                response = requests.get(url)
+                response = requests.get(url, timeout=60)
                 response.raise_for_status()
                 data = response.content
             except requests.HTTPError as e:
@@ -133,7 +133,7 @@ class show_marc(app.view):
         headers = {'Range': 'bytes=%d-%d' % (r0, r1)}
 
         try:
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=60)
             response.raise_for_status()
             result = response.content[:100000]
         except requests.HTTPError as e:

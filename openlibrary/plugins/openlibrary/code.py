@@ -426,7 +426,7 @@ class robotstxt(delegate.page):
 
 @web.memoize
 def fetch_ia_js(filename: str) -> str:
-    return requests.get(f'https://archive.org/includes/{filename}').text
+    return requests.get(f'https://archive.org/includes/{filename}', timeout=60).text
 
 
 class ia_js_cdn(delegate.page):
@@ -1065,8 +1065,8 @@ def get_cover_id(key):
     try:
         _, cat, oln = key.split('/')
         return requests.get(
-            f"https://covers.openlibrary.org/{cat}/query?olid={oln}&limit=1"
-        ).json()[0]
+            f"https://covers.openlibrary.org/{cat}/query?olid={oln}&limit=1", 
+        timeout=60).json()[0]
     except (IndexError, json.decoder.JSONDecodeError, TypeError, ValueError):
         return None
 

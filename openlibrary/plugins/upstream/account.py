@@ -566,7 +566,7 @@ class account_validation(delegate.page):
     def ia_username_exists(username):
         url = "https://archive.org/metadata/@%s" % username
         try:
-            return bool(requests.get(url).json())
+            return bool(requests.get(url, timeout=60).json())
         except (OSError, ValueError):
             return
 

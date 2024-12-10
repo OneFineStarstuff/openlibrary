@@ -76,7 +76,7 @@ USER_AGENT = (
 
 
 def download(url):
-    return requests.get(url, headers={'User-Agent': USER_AGENT}).content
+    return requests.get(url, headers={'User-Agent': USER_AGENT}, timeout=60).content
 
 
 def urldecode(url: str) -> tuple[str, dict[str, str]]:

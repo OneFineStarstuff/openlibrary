@@ -29,7 +29,7 @@ def get_api_response(url: str, params: dict | None = None) -> dict:
     api_response = {}
     stats.begin('archive.org', url=url)
     try:
-        r = requests.get(url, params=params)
+        r = requests.get(url, params=params, timeout=60)
         if r.status_code == requests.codes.ok:
             api_response = r.json()
         else:
@@ -117,7 +117,7 @@ def edition_from_item_metadata(itemid, metadata):
 def get_cover_url(item_id):
     """Gets the URL of the archive.org item's title (or cover) page."""
     base_url = f'{IA_BASE_URL}/download/{item_id}/page/'
-    title_response = requests.head(base_url + 'title.jpg', allow_redirects=True)
+    title_response = requests.head(base_url + 'title.jpg', allow_redirects=True, timeout=60)
     if title_response.status_code == 404:
         return base_url + 'cover.jpg'
     return base_url + 'title.jpg'
@@ -335,7 +335,7 @@ def get_candidate_ocaids(
     :param marcs: require MARCs present?
     """
     url = get_candidates_url(day, marcs=marcs)
-    results = requests.get(url).json()['response']['docs']
+    results = requests.get(url, timeout=60).json()['response']['docs']
     assert len(results) < 100_000, f'100,000 results returned for {day}'
 
     for row in results:

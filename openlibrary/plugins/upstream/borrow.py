@@ -559,7 +559,7 @@ def get_loan_status(resource_id: str):
 
     url = f'{loanstatus_url}/is_loaned_out/{resource_id}'
     try:
-        response = requests.get(url).json()
+        response = requests.get(url, timeout=60).json()
         if len(response) == 0:
             # No outstanding loans
             return None
@@ -589,7 +589,7 @@ def get_all_loaned_out():
 
     url = '%s/is_loaned_out/' % loanstatus_url
     try:
-        return requests.get(url).json()
+        return requests.get(url, timeout=60).json()
     except OSError:
         raise Exception('Loan status server not available')
 

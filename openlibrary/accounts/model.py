@@ -725,7 +725,7 @@ class InternetArchiveAccount(web.storage):
         if test:
             params['developer'] = test
 
-        response = requests.post(url, params=params, json=data)
+        response = requests.post(url, params=params, json=data, timeout=60)
         try:
             # This API should always return json, even on error (Unless
             # the server is down or something :P)
@@ -746,7 +746,7 @@ class InternetArchiveAccount(web.storage):
                     'Content-Type': 'application/json',
                     'authorization': f'LOW {access_key}:{secret_key}',
                 },
-            )
+            timeout=60)
             response.raise_for_status()
             return response.json()
         except requests.HTTPError as e:

@@ -58,7 +58,7 @@ class ISBNdb:
         'pagination',
         'weight',
     ]
-    REQUIRED_FIELDS = requests.get(SCHEMA_URL).json()['required']
+    REQUIRED_FIELDS = requests.get(SCHEMA_URL, timeout=60).json()['required']
 
     def __init__(self, data: dict[str, Any]):
         self.isbn_13 = [data.get('isbn13')]

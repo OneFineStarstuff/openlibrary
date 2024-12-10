@@ -53,7 +53,7 @@ def fetch_issues():
         'https://api.github.com/repos/internetarchive/openlibrary/issues',
         params=p,
         headers=github_headers,
-    )
+    timeout=60)
     d = response.json()
     if response.status_code != 200:
         print('Initial request for issues has failed.')
@@ -67,7 +67,7 @@ def fetch_issues():
     def get_next_page(url: str):
         """Returns list of issues and optional url for next page"""
         # Get issues
-        resp = requests.get(url, headers=github_headers)
+        resp = requests.get(url, headers=github_headers, timeout=60)
         d = resp.json()
 
         if resp.status_code != 200:
@@ -147,7 +147,7 @@ def filter_issues(issues: list, hours: int, leads: list[dict[str, str]]):
         # Fetch comments using URL from previous GitHub search results
         comments_url = i.get('comments_url')
 
-        resp = requests.get(comments_url, headers=github_headers)
+        resp = requests.get(comments_url, headers=github_headers, timeout=60)
 
         if resp.status_code != 200:
             log_api_failure(resp)
@@ -160,7 +160,7 @@ def filter_issues(issues: list, hours: int, leads: list[dict[str, str]]):
         last_url = last.get('url', '')
 
         if last_url:
-            resp = requests.get(last_url, headers=github_headers)
+            resp = requests.get(last_url, headers=github_headers, timeout=60)
             if resp.status_code != 200:
                 log_api_failure(resp)
                 # XXX : Somehow, notify Slack of error
@@ -233,7 +233,7 @@ def publish_digest(
                 'Content-Type': 'application/json;  charset=utf-8',
             },
             json=payload,
-        )
+        timeout=60)
 
     # Create the parent message
     parent_thread_msg = (
@@ -336,7 +336,7 @@ def add_label_to_issues(issues) -> bool:
             issue_labels_url,
             json={"labels": ["Needs: Response"]},
             headers=github_headers,
-        )
+        timeout=60)
 
         if response.status_code != 200:
             all_issues_labeled = False

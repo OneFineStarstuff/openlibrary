@@ -195,7 +195,7 @@ def get_groundtruth_availability(ocaid, s3_keys=None):
     params = '?action=availability&identifier=' + ocaid
     url = S3_LOAN_URL % config_bookreader_host
     try:
-        response = requests.post(url + params, data=s3_keys)
+        response = requests.post(url + params, data=s3_keys, timeout=60)
         response.raise_for_status()
     except requests.HTTPError:
         pass  # TODO: Handle unexpected responses from the availability server.
@@ -223,7 +223,7 @@ def s3_loan_api(s3_keys, ocaid=None, action='browse', **kwargs):
 
     data = s3_keys | kwargs
 
-    response = requests.post(url + params, data=data)
+    response = requests.post(url + params, data=data, timeout=60)
     # We want this to be just `409` but first
     # `www/common/Lending.inc#L111-114` needs to
     # be updated on petabox
@@ -568,7 +568,7 @@ def is_loaned_out_on_ia(identifier: str) -> bool | None:
     """Returns True if the item is checked out on Internet Archive."""
     url = "https://archive.org/services/borrow/%s?action=status" % identifier
     try:
-        response = requests.get(url).json()
+        response = requests.get(url, timeout=60).json()
         return response and response.get('checkedout')
     except Exception:  # TODO: Narrow exception scope
         logger.exception("is_loaned_out_on_ia(%s)" % identifier)
@@ -1007,7 +1007,7 @@ class ACS4Item:
     def get_data(self):
         url = f'{config_loanstatus_url}/item/{self.identifier}'
         try:
-            return requests.get(url).json()
+            return requests.get(url, timeout=60).json()
         except OSError:
             logger.exception("unable to connect BSS server")
 

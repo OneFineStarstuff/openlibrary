@@ -50,7 +50,7 @@ def get_lexile(isbn):
     try:
         url = 'https://atlas-fab.lexile.com/free/books/' + str(isbn)
         headers = {'accept': 'application/json; version=1.0'}
-        lexile = requests.get(url, headers=headers)
+        lexile = requests.get(url, headers=headers, timeout=60)
         lexile.raise_for_status()  # this will raise an error for us if the http status returned is not 200 OK
         data = lexile.json()
         return data, data.get("error_msg")
@@ -391,8 +391,8 @@ def _get_amazon_metadata(
         priority = "true" if high_priority else "false"
         stage = "true" if stage_import else "false"
         r = requests.get(
-            f'http://{affiliate_server_url}/isbn/{id_}?high_priority={priority}&stage_import={stage}'
-        )
+            f'http://{affiliate_server_url}/isbn/{id_}?high_priority={priority}&stage_import={stage}', 
+        timeout=60)
         r.raise_for_status()
         if data := r.json().get('hit'):
             return data
@@ -415,8 +415,8 @@ def stage_bookworm_metadata(identifier: str | None) -> dict | None:
         return None
     try:
         r = requests.get(
-            f"http://{affiliate_server_url}/isbn/{identifier}?high_priority=true&stage_import=true"
-        )
+            f"http://{affiliate_server_url}/isbn/{identifier}?high_priority=true&stage_import=true", 
+        timeout=60)
         r.raise_for_status()
         if data := r.json().get('hit'):
             return data
@@ -565,7 +565,7 @@ def _get_betterworldbooks_metadata(isbn: str) -> dict | None:
     """
 
     url = BETTERWORLDBOOKS_API_URL + isbn
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     if response.status_code != requests.codes.ok:
         return {'error': response.text, 'code': response.status_code}
     text = response.text

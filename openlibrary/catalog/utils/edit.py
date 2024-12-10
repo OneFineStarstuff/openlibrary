@@ -61,7 +61,7 @@ def undelete_author(a, ol):
     key = a['key']
     assert a['type'] == '/type/delete'
     url = 'http://openlibrary.org' + key + '.json?v=' + str(a['revision'] - 1)
-    prev = unmarshal(requests.get(url).json())
+    prev = unmarshal(requests.get(url, timeout=60).json())
     assert prev['type'] == '/type/author'
     ol.save(key, prev, 'undelete author')
 

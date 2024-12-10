@@ -64,7 +64,7 @@ class Image:
         if url.startswith("//"):
             url = "http:" + url
         try:
-            d = requests.get(url).json()
+            d = requests.get(url, timeout=60).json()
             d['created'] = parse_datetime(d['created'])
             if d['author'] == 'None':
                 d['author'] = None

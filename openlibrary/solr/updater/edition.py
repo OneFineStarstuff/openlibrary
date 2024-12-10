@@ -73,7 +73,7 @@ def solr_select_work(edition_key):
             'rows': 1,
             'fl': 'key',
         },
-    ).json()
+    timeout=60).json()
     if docs := reply['response'].get('docs', []):
         return docs[0]['key']  # /works/ prefix is in solr
 

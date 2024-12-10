@@ -18,7 +18,7 @@ IMAGE_REL = 'http://opds-spec.org/image'
 
 def get_feed(auth: AuthBase):
     """Fetches and returns Standard Ebook's feed."""
-    with requests.get(FEED_URL, auth=auth, stream=True) as r:
+    with requests.get(FEED_URL, auth=auth, stream=True, timeout=60) as r:
         r.raise_for_status()
         return feedparser.parse(r.raw, response_headers=r.headers)
 

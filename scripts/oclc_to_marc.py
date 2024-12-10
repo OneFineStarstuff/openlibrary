@@ -12,7 +12,7 @@ root = "https://openlibrary.org"
 
 
 def wget(path):
-    return requests.get(root + path).json()
+    return requests.get(root + path, timeout=60).json()
 
 
 def find_marc_url(d):

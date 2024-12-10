@@ -92,7 +92,7 @@ def get_wikidata_entity(
 
 
 def _get_from_web(id: str) -> WikidataEntity | None:
-    response = requests.get(f'{WIKIDATA_API_URL}{id}')
+    response = requests.get(f'{WIKIDATA_API_URL}{id}', timeout=60)
     if response.status_code == 200:
         entity = WikidataEntity.from_dict(
             response=response.json(), updated=datetime.now()

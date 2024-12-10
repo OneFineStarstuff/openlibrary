@@ -46,7 +46,7 @@ def get_work_iaids(wkey):
         solr_select_url
         + f"?version=2.2&q.op=AND&q={q}&rows=10&fl={filter}&qt=standard&wt=json&fq=type:work"
     )
-    reply = requests.get(solr_select).json()
+    reply = requests.get(solr_select, timeout=60).json()
     stats.end()
     print(reply)
     if reply['response']['numFound'] == 0:
@@ -75,7 +75,7 @@ def get_eids_for_wids(wids):
         solr_select_url
         + f"?version=2.2&q.op=AND&q={q}&rows=10&fl=key,{filter}&qt=standard&wt=json&fq=type:work"
     )
-    reply = requests.get(solr_select).json()
+    reply = requests.get(solr_select, timeout=60).json()
     if reply['response']['numFound'] == 0:
         return []
     rows = reply['response']['docs']
@@ -92,7 +92,7 @@ def get_solr_edition_records(iaids):
         solr_select_url
         + f"?version=2.2&q.op=AND&q={q}&rows=10&fl=key,{filter}&qt=standard&wt=json"
     )
-    reply = requests.get(solr_select).json()
+    reply = requests.get(solr_select, timeout=60).json()
     if reply['response']['numFound'] == 0:
         return []
     rows = reply['response']['docs']

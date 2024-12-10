@@ -17,7 +17,7 @@ def get_feed() -> Generator[dict[str, Any], None, None]:
     next_url = FEED_URL
 
     while next_url:
-        r = requests.get(next_url)
+        r = requests.get(next_url, timeout=60)
         response = r.json()
 
         # Yield each book in the response

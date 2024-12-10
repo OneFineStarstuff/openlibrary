@@ -14,7 +14,7 @@ def send_slack_message(message: str):
             'channel': '#team-abc-plus',
             'text': message,
         },
-    )
+    timeout=60)
     if response.status_code != 200:
         print(f"Failed to send message to Slack. Status code: {response.status_code}")
     else:
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         params={
             "q": query,
         },
-    ).json()["items"]
+    timeout=60).json()["items"]
 
     message = f"{len(prs)} open staff PRs:\n\n"
     for pr in prs:

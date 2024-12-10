@@ -1389,7 +1389,7 @@ def _get_blog_feeds():
     url = "https://blog.openlibrary.org/feed/"
     try:
         stats.begin("get_blog_feeds", url=url)
-        tree = ET.fromstring(requests.get(url).text)
+        tree = ET.fromstring(requests.get(url, timeout=60).text)
     except Exception:
         # Handle error gracefully.
         logging.getLogger("openlibrary").error(
