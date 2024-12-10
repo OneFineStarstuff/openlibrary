@@ -29,7 +29,8 @@ langs = {
             'identifiers': '',
             'code': '',
         },
-    timeout=60).json()
+        timeout=60,
+    ).json()
 }
 
 

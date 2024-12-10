@@ -77,7 +77,8 @@ def _get_loan_counts_from_graphite(ndays: int) -> list[list[int]] | None:
                 'tz': 'UTC',
                 'format': 'json',
             },
-        timeout=60)
+            timeout=60,
+        )
         return r.json()[0]['datapoints']
     except (requests.exceptions.RequestException, ValueError, AttributeError):
         return None
@@ -121,7 +122,8 @@ def _get_visitor_counts_from_graphite(self, ndays: int = 28) -> list[list[int]]:
                 "tz": "UTC",
                 "format": "json",
             },
-        timeout=60)
+            timeout=60,
+        )
         response.raise_for_status()
         visitors = response.json()[0]['datapoints']
     except requests.exceptions.RequestException:

@@ -51,8 +51,8 @@ class OpenLibrary:
 
         try:
             response = requests.request(
-                method, url, data=data, headers=headers, params=params, 
-            timeout=60)
+                method, url, data=data, headers=headers, params=params, timeout=60
+            )
             response.raise_for_status()
             return response
         except requests.HTTPError as e:

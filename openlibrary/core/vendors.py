@@ -391,8 +391,9 @@ def _get_amazon_metadata(
         priority = "true" if high_priority else "false"
         stage = "true" if stage_import else "false"
         r = requests.get(
-            f'http://{affiliate_server_url}/isbn/{id_}?high_priority={priority}&stage_import={stage}', 
-        timeout=60)
+            f'http://{affiliate_server_url}/isbn/{id_}?high_priority={priority}&stage_import={stage}',
+            timeout=60,
+        )
         r.raise_for_status()
         if data := r.json().get('hit'):
             return data
@@ -415,8 +416,9 @@ def stage_bookworm_metadata(identifier: str | None) -> dict | None:
         return None
     try:
         r = requests.get(
-            f"http://{affiliate_server_url}/isbn/{identifier}?high_priority=true&stage_import=true", 
-        timeout=60)
+            f"http://{affiliate_server_url}/isbn/{identifier}?high_priority=true&stage_import=true",
+            timeout=60,
+        )
         r.raise_for_status()
         if data := r.json().get('hit'):
             return data

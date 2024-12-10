@@ -1065,8 +1065,8 @@ def get_cover_id(key):
     try:
         _, cat, oln = key.split('/')
         return requests.get(
-            f"https://covers.openlibrary.org/{cat}/query?olid={oln}&limit=1", 
-        timeout=60).json()[0]
+            f"https://covers.openlibrary.org/{cat}/query?olid={oln}&limit=1", timeout=60
+        ).json()[0]
     except (IndexError, json.decoder.JSONDecodeError, TypeError, ValueError):
         return None
 

@@ -53,7 +53,8 @@ def fetch_issues():
         'https://api.github.com/repos/internetarchive/openlibrary/issues',
         params=p,
         headers=github_headers,
-    timeout=60)
+        timeout=60,
+    )
     d = response.json()
     if response.status_code != 200:
         print('Initial request for issues has failed.')
@@ -233,7 +234,8 @@ def publish_digest(
                 'Content-Type': 'application/json;  charset=utf-8',
             },
             json=payload,
-        timeout=60)
+            timeout=60,
+        )
 
     # Create the parent message
     parent_thread_msg = (
@@ -336,7 +338,8 @@ def add_label_to_issues(issues) -> bool:
             issue_labels_url,
             json={"labels": ["Needs: Response"]},
             headers=github_headers,
-        timeout=60)
+            timeout=60,
+        )
 
         if response.status_code != 200:
             all_issues_labeled = False

@@ -513,8 +513,8 @@ def render_list_preview_image(lst_key):
 
         if cover:
             response = requests.get(
-                f"https://covers.openlibrary.org/b/id/{cover.id}-M.jpg", 
-            timeout=60)
+                f"https://covers.openlibrary.org/b/id/{cover.id}-M.jpg", timeout=60
+            )
             image_bytes = io.BytesIO(response.content)
 
             img = Image.open(image_bytes)
