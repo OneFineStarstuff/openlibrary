@@ -63,7 +63,7 @@ class Uploader:
         if verbose:
             print(zip_command)
         zip_result = subprocess.run(
-            zip_command, shell=True, text=True, capture_output=True, check=True
+            zip_command, shell=False, text=True, capture_output=True, check=True
         )
         return int(zip_result.stdout.strip()) == 1
 
@@ -452,7 +452,7 @@ class ZipManager:
     def count_files_in_zip(filepath):
         command = f'unzip -l {filepath} | grep "jpg" |  wc -l'
         result = subprocess.run(
-            command, shell=True, text=True, capture_output=True, check=True
+            command, shell=False, text=True, capture_output=True, check=True
         )
         return int(result.stdout.strip())
 
