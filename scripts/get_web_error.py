@@ -35,7 +35,7 @@ def get_web_error(
     for host in hosts:
         cmd = f"ssh -A -t {host} 'docker exec -i {docker_container} cat {file_path}'"
         try:
-            if output := subprocess.check_output(cmd, shell=True, text=True):
+            if output := subprocess.check_output(cmd, shell=False, text=True):
                 return output
         except subprocess.CalledProcessError as e:
             print(f"Error: {e!r}")
