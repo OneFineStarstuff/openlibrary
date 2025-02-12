@@ -4,7 +4,6 @@ import datetime
 import hashlib
 import json
 import os.path
-import random
 
 import web
 
@@ -28,6 +27,7 @@ from openlibrary.plugins.upstream import edits
 from openlibrary.plugins.upstream import checkins
 from openlibrary.plugins.upstream import borrow, recentchanges  # TODO: unused imports?
 from openlibrary.plugins.upstream.utils import render_component
+import secrets
 
 if not config.get('coverstore_url'):
     config.coverstore_url = "https://covers.openlibrary.org"  # type: ignore[attr-defined]
@@ -387,7 +387,7 @@ def setup():
             "_": ugettext,
             "ungettext": ungettext,
             "gettext_territory": gettext_territory,
-            "random": random.Random(),
+            "random": secrets.SystemRandom().Random(),
             "commify": web.commify,
             "group": web.group,
             "storage": web.storage,
