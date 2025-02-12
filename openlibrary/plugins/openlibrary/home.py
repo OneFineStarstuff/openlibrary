@@ -1,7 +1,5 @@
 """Controller for home page.
 """
-
-import random
 import web
 import logging
 
@@ -15,6 +13,7 @@ from openlibrary.i18n import gettext as _
 from openlibrary.utils import dateutil
 from openlibrary.plugins.upstream.utils import get_blog_feeds, get_coverstore_public_url
 from openlibrary.plugins.worksearch import search, subjects
+import secrets
 
 logger = logging.getLogger("openlibrary.home")
 
@@ -113,7 +112,7 @@ class random_book(delegate.page):
             'type:edition AND ebook_access:[borrowable TO *]',
             fields=['key'],
             rows=1,
-            sort=f'random_{random.random()} desc',
+            sort=f'random_{secrets.SystemRandom().random()} desc',
         )['docs'][0]['key']
         raise web.seeother(key)
 
