@@ -35,6 +35,7 @@ from openlibrary.core import admin as admin_stats, helpers as h, imports, cache
 from openlibrary.core.models import Work
 from openlibrary.plugins.upstream import forms, spamcheck
 from openlibrary.plugins.upstream.account import send_forgot_password_email
+from security import safe_command
 
 logger = logging.getLogger("openlibrary.admin")
 
@@ -185,8 +186,7 @@ class gitpull:
         root = os.path.join(os.path.dirname(openlibrary.__file__), os.path.pardir)
         root = os.path.normpath(root)
 
-        p = subprocess.Popen(
-            'cd %s && git pull' % root,
+        p = safe_command.run(subprocess.Popen, 'cd %s && git pull' % root,
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
