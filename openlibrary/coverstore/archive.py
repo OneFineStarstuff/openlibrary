@@ -63,7 +63,13 @@ class Uploader:
         zip_command = fr'ia list {item} | grep "{filename}" | wc -l'
         if verbose:
             print(zip_command)
-        zip_result = safe_command.run(subprocess.run, zip_command, shell=True, text=True, capture_output=True, check=True
+        zip_result = safe_command.run(
+            subprocess.run,
+            zip_command,
+            shell=True,
+            text=True,
+            capture_output=True,
+            check=True,
         )
         return int(zip_result.stdout.strip()) == 1
 
@@ -451,7 +457,13 @@ class ZipManager:
     @staticmethod
     def count_files_in_zip(filepath):
         command = f'unzip -l {filepath} | grep "jpg" |  wc -l'
-        result = safe_command.run(subprocess.run, command, shell=True, text=True, capture_output=True, check=True
+        result = safe_command.run(
+            subprocess.run,
+            command,
+            shell=True,
+            text=True,
+            capture_output=True,
+            check=True,
         )
         return int(result.stdout.strip())
 
