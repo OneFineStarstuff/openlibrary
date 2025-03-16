@@ -15,7 +15,6 @@ from collections.abc import Iterable, Sized
 
 import httpx
 from httpx import HTTPError
-import requests
 import web
 from web import DB
 
@@ -24,6 +23,7 @@ from openlibrary.core import ia
 from openlibrary.core.bookshelves import Bookshelves
 from openlibrary.core.ratings import Ratings, WorkRatingsSummary
 from openlibrary.utils import extract_numeric_id_from_olid
+from security import safe_requests
 
 logger = logging.getLogger("openlibrary.solr.data_provider")
 
@@ -355,7 +355,7 @@ class ExternalDataProvider(DataProvider):
         return []
 
     def get_editions_of_work(self, work):
-        resp = requests.get(
+        resp = safe_requests.get(
             f"http://{self.ol_host}{work['key']}/editions.json", params={'limit': 500}
         ).json()
         if 'next' in resp['links']:

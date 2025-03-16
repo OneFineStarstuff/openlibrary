@@ -1,9 +1,9 @@
-import requests
 import web
 import json
 from time import sleep
 import urllib
 import sys
+from security import safe_requests
 
 
 query_host = 'openlibrary.org'
@@ -14,7 +14,7 @@ def urlopen(url, data=None):
     user_agent = f'Mozilla/5.0 (openlibrary; {__name__}) Python/{version}'
     headers = {'User-Agent': user_agent}
 
-    return requests.get(url, data=data, headers=headers)
+    return safe_requests.get(url, data=data, headers=headers)
 
 
 def jsonload(url):

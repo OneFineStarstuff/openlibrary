@@ -7,7 +7,6 @@ import json
 import logging
 import re
 from typing import Literal
-import requests
 import time
 from datetime import datetime
 
@@ -32,6 +31,7 @@ from lxml import etree
 
 import urllib
 import lxml.etree
+from security import safe_requests
 
 
 logger = logging.getLogger("openlibrary.borrow")
@@ -559,7 +559,7 @@ def get_loan_status(resource_id: str):
 
     url = f'{loanstatus_url}/is_loaned_out/{resource_id}'
     try:
-        response = requests.get(url).json()
+        response = safe_requests.get(url).json()
         if len(response) == 0:
             # No outstanding loans
             return None
@@ -589,7 +589,7 @@ def get_all_loaned_out():
 
     url = '%s/is_loaned_out/' % loanstatus_url
     try:
-        return requests.get(url).json()
+        return safe_requests.get(url).json()
     except OSError:
         raise Exception('Loan status server not available')
 

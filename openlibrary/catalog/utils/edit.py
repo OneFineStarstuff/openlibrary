@@ -1,9 +1,9 @@
 import re
-import requests
 import web
 from openlibrary.catalog.utils.query import get_mc
 from openlibrary.api import unmarshal
 from time import sleep
+from security import safe_requests
 
 re_meta_mrc = re.compile('([^/]+)_(meta|marc).(mrc|xml)')
 re_skip = re.compile(r'\b([A-Z]|Co|Dr|Jr|Capt|Mr|Mrs|Ms|Prof|Rev|Revd|Hon)\.$')
@@ -61,7 +61,7 @@ def undelete_author(a, ol):
     key = a['key']
     assert a['type'] == '/type/delete'
     url = 'http://openlibrary.org' + key + '.json?v=' + str(a['revision'] - 1)
-    prev = unmarshal(requests.get(url).json())
+    prev = unmarshal(safe_requests.get(url).json())
     assert prev['type'] == '/type/author'
     ol.save(key, prev, 'undelete author')
 

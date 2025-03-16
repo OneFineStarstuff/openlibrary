@@ -7,20 +7,20 @@ PYTHONPATH=. python ./scripts/import_pressbooks.py /olsystem/etc/openlibrary.yml
 import json
 import datetime
 import logging
-import requests
 import html
 
 from infogami import config
 from openlibrary.config import load_config
 from openlibrary.core.imports import Batch
 from scripts.solr_builder.solr_builder.fn_to_cli import FnToCLI
+from security import safe_requests
 
 logger = logging.getLogger("openlibrary.importer.pressbooks")
 
 
 langs = {
     lang['identifiers']['iso_639_1'][0]: lang['code']
-    for lang in requests.get(
+    for lang in safe_requests.get(
         'https://openlibrary.org/query.json',
         {
             'limit': '500',
