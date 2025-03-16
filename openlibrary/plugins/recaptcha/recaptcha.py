@@ -3,6 +3,7 @@
 import web
 import requests
 import logging
+from security import safe_requests
 
 
 class Recaptcha(web.form.Input):
@@ -27,7 +28,7 @@ class Recaptcha(web.form.Input):
         }
 
         try:
-            r = requests.get(url, params=params, timeout=3)
+            r = safe_requests.get(url, params=params, timeout=3)
         except requests.exceptions.RequestException as e:
             logging.getLogger("openlibrary").exception(
                 'Recaptcha call failed: letting user through'

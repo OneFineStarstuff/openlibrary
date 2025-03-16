@@ -8,6 +8,7 @@ from openlibrary.catalog.marc.marc_binary import MarcBinary
 from openlibrary.catalog.marc.marc_xml import MarcXml
 from openlibrary.core import ia
 import lxml.etree
+from security import safe_requests
 
 
 IA_BASE_URL = config.get('ia_base_url')
@@ -19,7 +20,7 @@ def urlopen_keep_trying(url: str, headers=None, **kwargs):
     """Tries to request the url three times, raises HTTPError if 403, 404, or 416.  Returns a requests.Response"""
     for i in range(3):
         try:
-            resp = requests.get(url, headers=headers, **kwargs)
+            resp = safe_requests.get(url, headers=headers, **kwargs)
             resp.raise_for_status()
             return resp
         except requests.HTTPError as error:

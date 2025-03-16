@@ -4,8 +4,6 @@ The purpose of this file is to:
 2. Store the results
 3. Make the results easy to access from other files
 """
-
-import requests
 import logging
 from dataclasses import dataclass
 from openlibrary.core.helpers import days_since
@@ -13,6 +11,7 @@ from openlibrary.core.helpers import days_since
 from datetime import datetime
 import json
 from openlibrary.core import db
+from security import safe_requests
 
 logger = logging.getLogger("core.wikidata")
 
@@ -92,7 +91,7 @@ def get_wikidata_entity(
 
 
 def _get_from_web(id: str) -> WikidataEntity | None:
-    response = requests.get(f'{WIKIDATA_API_URL}{id}')
+    response = safe_requests.get(f'{WIKIDATA_API_URL}{id}')
     if response.status_code == 200:
         entity = WikidataEntity.from_dict(
             response=response.json(), updated=datetime.now()

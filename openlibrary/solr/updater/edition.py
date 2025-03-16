@@ -2,14 +2,13 @@ from functools import cached_property
 import logging
 import re
 from typing import TYPE_CHECKING, cast
-
-import requests
 import openlibrary.book_providers as bp
 from openlibrary.solr.solr_types import SolrDocument
 from openlibrary.solr.updater.abstract import AbstractSolrBuilder, AbstractSolrUpdater
 from openlibrary.solr.utils import SolrUpdateRequest, get_solr_base_url
 from openlibrary.utils import uniq
 from openlibrary.utils.isbn import opposite_isbn
+from security import safe_requests
 
 if TYPE_CHECKING:
     from openlibrary.solr.updater.work import WorkSolrBuilder
@@ -65,7 +64,7 @@ def solr_select_work(edition_key):
         return None
 
     edition_key = solr_escape(edition_key)
-    reply = requests.get(
+    reply = safe_requests.get(
         f'{get_solr_base_url()}/select',
         params={
             'wt': 'json',

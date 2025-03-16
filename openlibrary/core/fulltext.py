@@ -7,6 +7,7 @@ from infogami import config
 from openlibrary.core.lending import get_availability_of_ocaids
 from openlibrary.plugins.openlibrary.home import format_book_data
 from urllib.parse import urlencode
+from security import safe_requests
 
 logger = logging.getLogger("openlibrary.inside")
 
@@ -19,7 +20,7 @@ def fulltext_search_api(params):
 
     logger.debug('URL: ' + search_select)
     try:
-        response = requests.get(search_select, timeout=30)
+        response = safe_requests.get(search_select, timeout=30)
         response.raise_for_status()
         return response.json()
     except requests.HTTPError:

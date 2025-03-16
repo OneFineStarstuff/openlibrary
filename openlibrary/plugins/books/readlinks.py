@@ -5,7 +5,6 @@ editions of the same work that might be available.
 
 import sys
 import re
-import requests
 
 import web
 from openlibrary.core import ia
@@ -15,6 +14,7 @@ from openlibrary.plugins.books import dynlinks
 from infogami.utils.delegate import register_exception
 from infogami.utils import stats
 from infogami import config
+from security import safe_requests
 
 
 def key_to_olid(key):
@@ -46,7 +46,7 @@ def get_work_iaids(wkey):
         solr_select_url
         + f"?version=2.2&q.op=AND&q={q}&rows=10&fl={filter}&qt=standard&wt=json&fq=type:work"
     )
-    reply = requests.get(solr_select).json()
+    reply = safe_requests.get(solr_select).json()
     stats.end()
     print(reply)
     if reply['response']['numFound'] == 0:
@@ -75,7 +75,7 @@ def get_eids_for_wids(wids):
         solr_select_url
         + f"?version=2.2&q.op=AND&q={q}&rows=10&fl=key,{filter}&qt=standard&wt=json&fq=type:work"
     )
-    reply = requests.get(solr_select).json()
+    reply = safe_requests.get(solr_select).json()
     if reply['response']['numFound'] == 0:
         return []
     rows = reply['response']['docs']
@@ -92,7 +92,7 @@ def get_solr_edition_records(iaids):
         solr_select_url
         + f"?version=2.2&q.op=AND&q={q}&rows=10&fl=key,{filter}&qt=standard&wt=json"
     )
-    reply = requests.get(solr_select).json()
+    reply = safe_requests.get(solr_select).json()
     if reply['response']['numFound'] == 0:
         return []
     rows = reply['response']['docs']

@@ -4,16 +4,16 @@ for the admin panel
 """
 
 import re
-import requests
 from collections import defaultdict
 
 from bs4 import BeautifulSoup
+from security import safe_requests
 
 
 class Nagios:
     def __init__(self, url):
         try:
-            self.data = BeautifulSoup(requests.get(url).content, "lxml")
+            self.data = BeautifulSoup(safe_requests.get(url).content, "lxml")
         except Exception as m:
             print(m)
             self.data = None

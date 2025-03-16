@@ -1,6 +1,7 @@
 from datetime import datetime
 import requests
 import os
+from security import safe_requests
 
 
 def send_slack_message(message: str):
@@ -45,7 +46,7 @@ if __name__ == "__main__":
     excluded_labels = " ".join([f'-label:"{label}"' for label in EXCLUDE_LABELS])
     query = f'{query} {included_authors} {excluded_labels}'
 
-    prs = requests.get(
+    prs = safe_requests.get(
         "https://api.github.com/search/issues",
         params={
             "q": query,

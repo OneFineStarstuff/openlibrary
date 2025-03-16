@@ -8,6 +8,7 @@ import web
 import re
 
 import requests
+from security import safe_requests
 
 
 class old_show_marc(app.view):
@@ -24,7 +25,7 @@ class show_ia(app.view):
         error_404 = False
         url = f'https://archive.org/download/{ia}/{ia}_meta.mrc'
         try:
-            response = requests.get(url)
+            response = safe_requests.get(url)
             response.raise_for_status()
             data = response.content
         except requests.HTTPError as e:
@@ -36,7 +37,7 @@ class show_ia(app.view):
         if error_404:  # no MARC record
             url = f'https://archive.org/download/{ia}/{ia}_meta.xml'
             try:
-                response = requests.get(url)
+                response = safe_requests.get(url)
                 response.raise_for_status()
                 data = response.content
             except requests.HTTPError as e:
@@ -133,7 +134,7 @@ class show_marc(app.view):
         headers = {'Range': 'bytes=%d-%d' % (r0, r1)}
 
         try:
-            response = requests.get(url, headers=headers)
+            response = safe_requests.get(url, headers=headers)
             response.raise_for_status()
             result = response.content[:100000]
         except requests.HTTPError as e:

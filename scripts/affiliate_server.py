@@ -47,8 +47,6 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from typing import Any, Final
-
-import requests
 import web
 
 import _init_path  # noqa: F401  Imported for its side effect of setting PYTHONPATH
@@ -64,6 +62,7 @@ from openlibrary.utils.isbn import (
     normalize_identifier,
     isbn_10_to_isbn_13,
 )
+from security import safe_requests
 
 logger = logging.getLogger("affiliate-server")
 
@@ -236,7 +235,7 @@ def fetch_google_book(isbn: str) -> dict | None:
     url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}"
     headers = {"User-Agent": "Open Library BookWorm/1.0"}
     try:
-        r = requests.get(url, headers=headers)
+        r = safe_requests.get(url, headers=headers)
         if r.status_code == 200:
             return r.json()
 
