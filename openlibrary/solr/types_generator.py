@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import defusedxml.ElementTree
 
 root = os.path.dirname(__file__)
 OVERRIDES = {
@@ -14,10 +15,9 @@ OVERRIDES = {
 
 def generate():
     """This function generates the types.py file."""
-    import xml.etree.ElementTree as ET
 
     # read the managed-schema xml file
-    solr_schema = ET.parse(
+    solr_schema = defusedxml.ElementTree.parse(
         os.path.join(root, '../../conf/solr/conf/managed-schema.xml')
     )
     python_fields: list[str] = []
@@ -51,7 +51,7 @@ def generate():
             field_class = field_type.get('class')
             if field_class == 'solr.EnumFieldType':
                 enumsConfigFile = field_type.get('enumsConfig')
-                enumsConfig = ET.parse(
+                enumsConfig = defusedxml.ElementTree.parse(
                     os.path.join(root, '../../conf/solr/conf/', enumsConfigFile)
                 )
                 enum_values = [
