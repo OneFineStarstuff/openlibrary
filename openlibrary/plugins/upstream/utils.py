@@ -13,7 +13,6 @@ from babel.lists import format_list
 from collections import defaultdict
 import re
 import random
-import xml.etree.ElementTree as ET
 import datetime
 import logging
 from html.parser import HTMLParser
@@ -45,6 +44,7 @@ from openlibrary.core import cache
 
 from web.utils import Storage
 from web.template import TemplateResult
+import defusedxml.ElementTree
 
 if TYPE_CHECKING:
     from openlibrary.plugins.upstream.models import (
@@ -1389,7 +1389,7 @@ def _get_blog_feeds():
     url = "https://blog.openlibrary.org/feed/"
     try:
         stats.begin("get_blog_feeds", url=url)
-        tree = ET.fromstring(requests.get(url).text)
+        tree = defusedxml.ElementTree.fromstring(requests.get(url).text)
     except Exception:
         # Handle error gracefully.
         logging.getLogger("openlibrary").error(
