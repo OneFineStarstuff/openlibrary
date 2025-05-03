@@ -115,7 +115,7 @@ class Disk:
         for f in self.files:
             cmd = "gzip -cd %s | sort -S1G" % f.name
             logger.info(cmd)
-            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+            p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
             for line in p.stdout:
                 key, value = line.split("\t", 1)
                 yield key, value
