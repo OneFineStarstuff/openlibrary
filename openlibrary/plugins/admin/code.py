@@ -187,7 +187,8 @@ class gitpull:
 
         p = subprocess.Popen(
             'cd %s && git pull' % root,
-            shell=False, stdout=subprocess.PIPE,
+            shell=False,
+            stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
         )
         out = p.stdout.read()
