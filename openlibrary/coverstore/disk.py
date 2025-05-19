@@ -1,12 +1,12 @@
-import random
 import os
 import string
+import secrets
 
 chars = string.ascii_letters + string.digits
 
 
 def random_string(n):
-    return "".join([random.choice(chars) for i in range(n)])
+    return "".join([secrets.choice(chars) for i in range(n)])
 
 
 class Disk:
