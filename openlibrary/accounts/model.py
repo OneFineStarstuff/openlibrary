@@ -84,7 +84,9 @@ def generate_hash(secret_key, text, salt=None):
     salt = (
         salt
         or hmac.HMAC(
-            secret_key, str(secrets.SystemRandom().random()).encode('utf-8'), hashlib.md5
+            secret_key,
+            str(secrets.SystemRandom().random()).encode('utf-8'),
+            hashlib.md5,
         ).hexdigest()[:5]
     )
     hash = hmac.HMAC(

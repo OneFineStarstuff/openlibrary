@@ -1,5 +1,6 @@
 """Controller for home page.
 """
+
 import web
 import logging
 
