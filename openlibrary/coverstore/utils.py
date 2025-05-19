@@ -3,7 +3,6 @@
 import json
 import mimetypes
 import os
-import random
 import socket
 import string
 
@@ -16,6 +15,7 @@ from openlibrary.coverstore import config, oldb
 
 from io import IOBase as file
 import contextlib
+import secrets
 
 socket.setdefaulttimeout(10.0)
 
@@ -129,7 +129,7 @@ chars = string.ascii_letters + string.digits
 
 
 def random_string(n):
-    return "".join([random.choice(chars) for i in range(n)])
+    return "".join([secrets.choice(chars) for i in range(n)])
 
 
 def urlencode(data):

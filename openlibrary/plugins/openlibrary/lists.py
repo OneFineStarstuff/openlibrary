@@ -4,7 +4,6 @@
 from dataclasses import dataclass, field
 import json
 from urllib.parse import parse_qs
-import random
 from typing import Literal, cast
 import web
 
@@ -29,6 +28,7 @@ from openlibrary.plugins.upstream import spamcheck, utils
 from openlibrary.plugins.upstream.account import MyBooksTemplate
 from openlibrary.plugins.worksearch import subjects
 from openlibrary.coverstore.code import render_list_preview_image
+import secrets
 
 
 def subject_key_to_seed(key: subjects.SubjectPseudoKey) -> SeedSubjectString:
@@ -927,7 +927,7 @@ def _get_active_lists_in_random(limit=20, preload=True):
         lists += [xlist for xlist in result if len(xlist.get("seeds", [])) > 4]
 
     if len(lists) > limit:
-        lists = random.sample(lists, limit)
+        lists = secrets.SystemRandom().sample(lists, limit)
 
     if preload:
         _preload_lists(lists)

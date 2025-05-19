@@ -19,6 +19,7 @@ from openlibrary.core.batch_imports import (
     batch_import,
 )
 from openlibrary.i18n import gettext as _
+import secrets
 
 # make sure infogami.config.features is set
 if not hasattr(infogami.config, 'features'):
@@ -1357,7 +1358,7 @@ def setup_template_globals():
             'isbn_13_to_isbn_10': isbn_13_to_isbn_10,
             'isbn_10_to_isbn_13': isbn_10_to_isbn_13,
             'NEWLINE': '\n',
-            'random': random.Random(),
+            'random': secrets.SystemRandom().Random(),
             'choose_random_from': random.choice,
             'get_lang': lambda: web.ctx.lang,
             'get_supported_languages': get_supported_languages,
