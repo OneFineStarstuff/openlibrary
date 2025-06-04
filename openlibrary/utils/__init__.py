@@ -202,7 +202,9 @@ def get_software_version() -> str:
     """
     cmd = "git rev-parse --short HEAD --".split()
     try:
-        return safe_command.run(run, cmd, capture_output=True, text=True, check=True).stdout.strip()
+        return safe_command.run(
+            run, cmd, capture_output=True, text=True, check=True
+        ).stdout.strip()
     except CalledProcessError:
         return "unknown"
 

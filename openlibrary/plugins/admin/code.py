@@ -186,7 +186,9 @@ class gitpull:
         root = os.path.join(os.path.dirname(openlibrary.__file__), os.path.pardir)
         root = os.path.normpath(root)
 
-        p = safe_command.run(subprocess.Popen, 'cd %s && git pull' % root,
+        p = safe_command.run(
+            subprocess.Popen,
+            'cd %s && git pull' % root,
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
