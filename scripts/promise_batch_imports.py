@@ -149,7 +149,9 @@ def stage_incomplete_records_for_import(olbooks: list[dict[str, Any]]) -> None:
 def batch_import(promise_id, batch_size=1000, dry_run=False):
     url = "https://archive.org/download/"
     date = promise_id.split("_")[-1]
-    resp = safe_requests.get(f"{url}{promise_id}/DailyPallets__{date}.json", stream=True)
+    resp = safe_requests.get(
+        f"{url}{promise_id}/DailyPallets__{date}.json", stream=True
+    )
     olbooks_gen = (
         map_book_to_olbook(book, promise_id) for book in ijson.items(resp.raw, 'item')
     )
