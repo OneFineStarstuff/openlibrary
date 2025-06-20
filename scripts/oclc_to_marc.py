@@ -3,16 +3,15 @@
 Usage: python oclc_to_marc.py oclc_1 oclc_2
 """
 
-import requests
-
 import urllib
+from security import safe_requests
 
 
 root = "https://openlibrary.org"
 
 
 def wget(path):
-    return requests.get(root + path).json()
+    return safe_requests.get(root + path).json()
 
 
 def find_marc_url(d):

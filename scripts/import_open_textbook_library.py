@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import json
-import requests
 import time
 from itertools import islice
 from typing import Any
@@ -8,6 +7,7 @@ from collections.abc import Generator
 from openlibrary.core.imports import Batch
 from scripts.solr_builder.solr_builder.fn_to_cli import FnToCLI
 from openlibrary.config import load_config
+from security import safe_requests
 
 FEED_URL = 'https://open.umn.edu/opentextbooks/textbooks.json?'
 
@@ -17,7 +17,7 @@ def get_feed() -> Generator[dict[str, Any], None, None]:
     next_url = FEED_URL
 
     while next_url:
-        r = requests.get(next_url)
+        r = safe_requests.get(next_url)
         response = r.json()
 
         # Yield each book in the response

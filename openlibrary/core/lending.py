@@ -23,6 +23,7 @@ from openlibrary.utils import dateutil, uniq
 
 from . import ia
 from . import helpers as h
+from security import safe_requests
 
 
 if TYPE_CHECKING:
@@ -279,7 +280,7 @@ def get_available(
             "x-preferred-client-id": client_ip,
             "x-application-id": "openlibrary",
         }
-        response = requests.get(
+        response = safe_requests.get(
             url, headers=headers, timeout=config_http_request_timeout
         )
         items = response.json().get('response', {}).get('docs', [])
@@ -391,7 +392,7 @@ def get_availability(
             )
         response = cast(
             AvailabilityServiceResponse,
-            requests.get(
+            safe_requests.get(
                 config_ia_availability_api_v2_url,
                 params={
                     id_type: ','.join(ids_to_fetch),
@@ -568,7 +569,7 @@ def is_loaned_out_on_ia(identifier: str) -> bool | None:
     """Returns True if the item is checked out on Internet Archive."""
     url = "https://archive.org/services/borrow/%s?action=status" % identifier
     try:
-        response = requests.get(url).json()
+        response = safe_requests.get(url).json()
         return response and response.get('checkedout')
     except Exception:  # TODO: Narrow exception scope
         logger.exception("is_loaned_out_on_ia(%s)" % identifier)
@@ -1007,7 +1008,7 @@ class ACS4Item:
     def get_data(self):
         url = f'{config_loanstatus_url}/item/{self.identifier}'
         try:
-            return requests.get(url).json()
+            return safe_requests.get(url).json()
         except OSError:
             logger.exception("unable to connect BSS server")
 

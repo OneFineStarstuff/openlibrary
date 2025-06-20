@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import json
-import requests
 from requests.auth import AuthBase, HTTPBasicAuth
 import time
 from typing import Any
@@ -11,6 +10,7 @@ from openlibrary.core.imports import Batch
 from scripts.solr_builder.solr_builder.fn_to_cli import FnToCLI
 from openlibrary.config import load_config
 from infogami import config
+from security import safe_requests
 
 FEED_URL = 'https://standardebooks.org/opds/all'
 IMAGE_REL = 'http://opds-spec.org/image'
@@ -18,7 +18,7 @@ IMAGE_REL = 'http://opds-spec.org/image'
 
 def get_feed(auth: AuthBase):
     """Fetches and returns Standard Ebook's feed."""
-    with requests.get(FEED_URL, auth=auth, stream=True) as r:
+    with safe_requests.get(FEED_URL, auth=auth, stream=True) as r:
         r.raise_for_status()
         return feedparser.parse(r.raw, response_headers=r.headers)
 

@@ -26,6 +26,7 @@ from openlibrary.utils.isbn import (
     isbn_13_to_isbn_10,
     normalize_isbn,
 )
+from security import safe_requests
 
 logger = logging.getLogger("openlibrary.vendors")
 
@@ -50,7 +51,7 @@ def get_lexile(isbn):
     try:
         url = 'https://atlas-fab.lexile.com/free/books/' + str(isbn)
         headers = {'accept': 'application/json; version=1.0'}
-        lexile = requests.get(url, headers=headers)
+        lexile = safe_requests.get(url, headers=headers)
         lexile.raise_for_status()  # this will raise an error for us if the http status returned is not 200 OK
         data = lexile.json()
         return data, data.get("error_msg")
@@ -390,7 +391,7 @@ def _get_amazon_metadata(
     try:
         priority = "true" if high_priority else "false"
         stage = "true" if stage_import else "false"
-        r = requests.get(
+        r = safe_requests.get(
             f'http://{affiliate_server_url}/isbn/{id_}?high_priority={priority}&stage_import={stage}'
         )
         r.raise_for_status()
@@ -414,7 +415,7 @@ def stage_bookworm_metadata(identifier: str | None) -> dict | None:
     if not identifier:
         return None
     try:
-        r = requests.get(
+        r = safe_requests.get(
             f"http://{affiliate_server_url}/isbn/{identifier}?high_priority=true&stage_import=true"
         )
         r.raise_for_status()
@@ -565,7 +566,7 @@ def _get_betterworldbooks_metadata(isbn: str) -> dict | None:
     """
 
     url = BETTERWORLDBOOKS_API_URL + isbn
-    response = requests.get(url)
+    response = safe_requests.get(url)
     if response.status_code != requests.codes.ok:
         return {'error': response.text, 'code': response.status_code}
     text = response.text

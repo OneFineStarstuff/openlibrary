@@ -40,6 +40,7 @@ from .ia import get_metadata
 from .waitinglist import WaitingLoan
 from ..accounts import OpenLibraryAccount
 from ..plugins.upstream.utils import get_coverstore_url, get_coverstore_public_url
+from security import safe_requests
 
 logger = logging.getLogger("openlibrary.core")
 
@@ -64,7 +65,7 @@ class Image:
         if url.startswith("//"):
             url = "http:" + url
         try:
-            d = requests.get(url).json()
+            d = safe_requests.get(url).json()
             d['created'] = parse_datetime(d['created'])
             if d['author'] == 'None':
                 d['author'] = None

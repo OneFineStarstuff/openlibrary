@@ -27,6 +27,7 @@ from openlibrary.core.bookshelves import Bookshelves
 from openlibrary.core.observations import Observations
 from openlibrary.core.ratings import Ratings
 from openlibrary.core.edits import CommunityEditsQueue
+from security import safe_requests
 
 try:
     from simplejson.errors import JSONDecodeError
@@ -740,7 +741,7 @@ class InternetArchiveAccount(web.storage):
 
         url = lending.config_ia_s3_auth_url
         try:
-            response = requests.get(
+            response = safe_requests.get(
                 url,
                 headers={
                     'Content-Type': 'application/json',
