@@ -6,8 +6,6 @@ import os
 import random
 import socket
 import string
-
-import requests
 import web
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, unquote, unquote_plus  # type: ignore[attr-defined]
 from urllib.parse import urlencode as real_urlencode
@@ -16,6 +14,7 @@ from openlibrary.coverstore import config, oldb
 
 from io import IOBase as file
 import contextlib
+from security import safe_requests
 
 socket.setdefaulttimeout(10.0)
 
@@ -76,7 +75,7 @@ USER_AGENT = (
 
 
 def download(url):
-    return requests.get(url, headers={'User-Agent': USER_AGENT}).content
+    return safe_requests.get(url, headers={'User-Agent': USER_AGENT}).content
 
 
 def urldecode(url: str) -> tuple[str, dict[str, str]]:

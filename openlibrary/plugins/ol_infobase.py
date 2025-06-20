@@ -10,8 +10,6 @@ import os
 import re
 import sys
 import traceback
-
-import requests
 import web
 
 from infogami.infobase import cache, common, config, dbstore, server
@@ -21,6 +19,7 @@ from ..utils.isbn import isbn_10_to_isbn_13, isbn_13_to_isbn_10, normalize_isbn
 
 # relative import
 from .openlibrary import schema
+from security import safe_requests
 
 logger = logging.getLogger("infobase.ol")
 
@@ -370,7 +369,7 @@ def http_notify(site, old, new):
 
     for url in config.http_listeners:
         try:
-            response = requests.get(url, params=json_data)
+            response = safe_requests.get(url, params=json_data)
             response.raise_for_status()
             print(
                 'http_notify', repr(url), repr(key), repr(response.text), file=web.debug

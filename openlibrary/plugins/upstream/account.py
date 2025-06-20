@@ -2,7 +2,6 @@ from datetime import datetime
 import json
 import logging
 import re
-import requests
 from typing import Any, TYPE_CHECKING, Final
 from collections.abc import Callable
 from collections.abc import Iterable, Mapping
@@ -49,6 +48,7 @@ from openlibrary.accounts import (
 )
 from openlibrary.plugins.upstream import borrow, forms, utils
 from openlibrary.utils.dateutil import elapsed_time
+from security import safe_requests
 
 if TYPE_CHECKING:
     from openlibrary.plugins.upstream.models import Work
@@ -566,7 +566,7 @@ class account_validation(delegate.page):
     def ia_username_exists(username):
         url = "https://archive.org/metadata/@%s" % username
         try:
-            return bool(requests.get(url).json())
+            return bool(safe_requests.get(url).json())
         except (OSError, ValueError):
             return
 

@@ -19,6 +19,7 @@ from datetime import datetime, timedelta
 from typing import Any
 
 import requests
+from security import safe_requests
 
 github_headers = {
     'X-GitHub-Api-Version': '2022-11-28',
@@ -49,7 +50,7 @@ def fetch_issues():
     """
     # Make initial query for open issues:
     p = {'state': 'open', 'per_page': 100}
-    response = requests.get(
+    response = safe_requests.get(
         'https://api.github.com/repos/internetarchive/openlibrary/issues',
         params=p,
         headers=github_headers,
@@ -67,7 +68,7 @@ def fetch_issues():
     def get_next_page(url: str):
         """Returns list of issues and optional url for next page"""
         # Get issues
-        resp = requests.get(url, headers=github_headers)
+        resp = safe_requests.get(url, headers=github_headers)
         d = resp.json()
 
         if resp.status_code != 200:
@@ -147,7 +148,7 @@ def filter_issues(issues: list, hours: int, leads: list[dict[str, str]]):
         # Fetch comments using URL from previous GitHub search results
         comments_url = i.get('comments_url')
 
-        resp = requests.get(comments_url, headers=github_headers)
+        resp = safe_requests.get(comments_url, headers=github_headers)
 
         if resp.status_code != 200:
             log_api_failure(resp)
@@ -160,7 +161,7 @@ def filter_issues(issues: list, hours: int, leads: list[dict[str, str]]):
         last_url = last.get('url', '')
 
         if last_url:
-            resp = requests.get(last_url, headers=github_headers)
+            resp = safe_requests.get(last_url, headers=github_headers)
             if resp.status_code != 200:
                 log_api_failure(resp)
                 # XXX : Somehow, notify Slack of error

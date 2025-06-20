@@ -5,8 +5,6 @@ import json
 import logging
 import os
 
-import requests
-
 import web
 
 from PIL import Image, ImageDraw, ImageFont
@@ -25,6 +23,7 @@ from openlibrary.coverstore.utils import (
     safeint,
 )
 from openlibrary.plugins.openlibrary.processors import CORSProcessor
+from security import safe_requests
 
 logger = logging.getLogger("coverstore")
 
@@ -299,7 +298,7 @@ class cover:
     def get_ia_cover_url(self, identifier, size="M"):
         url = "https://archive.org/metadata/%s/metadata" % identifier
         try:
-            d = requests.get(url).json().get("result", {})
+            d = safe_requests.get(url).json().get("result", {})
         except (OSError, ValueError):
             return
 
@@ -512,7 +511,7 @@ def render_list_preview_image(lst_key):
         cover = seed.get_cover()
 
         if cover:
-            response = requests.get(
+            response = safe_requests.get(
                 f"https://covers.openlibrary.org/b/id/{cover.id}-M.jpg"
             )
             image_bytes = io.BytesIO(response.content)

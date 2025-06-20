@@ -8,6 +8,7 @@ import web
 from infogami import config
 
 from openlibrary.core import cache
+from security import safe_requests
 
 
 class Stats:
@@ -69,7 +70,7 @@ class Stats:
 )
 def _get_loan_counts_from_graphite(ndays: int) -> list[list[int]] | None:
     try:
-        r = requests.get(
+        r = safe_requests.get(
             'http://graphite.us.archive.org/render',
             params={
                 'target': 'hitcount(stats.ol.loans.bookreader, "1d")',
@@ -113,7 +114,7 @@ def _get_visitor_counts_from_graphite(self, ndays: int = 28) -> list[list[int]]:
     :return: list containing [count, timestamp] for ndays
     """
     try:
-        response = requests.get(
+        response = safe_requests.get(
             "http://graphite.us.archive.org/render/",
             params={
                 "target": "summarize(stats.uniqueips.openlibrary, '1d')",

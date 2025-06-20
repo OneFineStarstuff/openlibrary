@@ -3,7 +3,6 @@
 
 import os
 from collections.abc import Iterable
-import requests
 import sys
 import web
 import subprocess
@@ -35,6 +34,7 @@ from openlibrary.core import admin as admin_stats, helpers as h, imports, cache
 from openlibrary.core.models import Work
 from openlibrary.plugins.upstream import forms, spamcheck
 from openlibrary.plugins.upstream.account import send_forgot_password_email
+from security import safe_requests
 
 logger = logging.getLogger("openlibrary.admin")
 
@@ -210,7 +210,7 @@ class reload:
             s = web.rstrips(s, "/") + "/_reload"
             yield "<h3>" + s + "</h3>"
             try:
-                response = requests.get(s).text
+                response = safe_requests.get(s).text
                 yield "<p><pre>" + response[:100] + "</pre></p>"
             except:
                 yield "<p><pre>%s</pre></p>" % traceback.format_exc()
