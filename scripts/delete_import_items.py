@@ -51,14 +51,14 @@ class DeleteImportItemJob:
         with open(self.in_file) as f:
             # Seek to start line
             for _ in range(1, self.start_line):
-                f.readline()
+                f.readline(5_000_000)
 
             # Delete a batch of records
             lines_processed = 0
             affected_records = 0
             num_deleted = 0
             for _ in range(self.batch_size):
-                line = f.readline()
+                line = f.readline(5_000_000)
                 if not line:
                     break
                 fields = line.strip().split('\t')
