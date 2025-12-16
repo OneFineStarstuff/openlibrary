@@ -107,6 +107,7 @@ def generate_docs(dir):
 
 
 def generate_index():
+    """Generates an index file for API documentation."""
     filenames = sorted(os.listdir("docs/api"))
     with open("docs/api/index.rst", "w") as f:
 
