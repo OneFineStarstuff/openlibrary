@@ -107,17 +107,17 @@ def generate_docs(dir):
 
 
 def generate_index():
+    """Generates an index file for API documentation."""
     filenames = sorted(os.listdir("docs/api"))
+    with open("docs/api/index.rst", "w") as f:
 
-    f = open("docs/api/index.rst", "w")
-
-    f.write("API Documentation\n")
-    f.write("=================\n")
-    f.write("\n")
-    f.write(".. toctree::\n")
-    f.write("   :maxdepth: 1\n")
-    f.write("\n")
-    f.write("\n".join("   " + filename for filename in filenames))
+        f.write("API Documentation\n")
+        f.write("=================\n")
+        f.write("\n")
+        f.write(".. toctree::\n")
+        f.write("   :maxdepth: 1\n")
+        f.write("\n")
+        f.write("\n".join("   " + filename for filename in filenames))
 
 
 def main():
